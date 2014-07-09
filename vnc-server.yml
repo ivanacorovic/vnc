@@ -1,0 +1,9 @@
+---
+- name: 'VNC Playbook'
+  hosts: vnc
+  user: root
+  vars_files:
+    - vars/main.yml
+  roles:
+    - create-vnc-user
+    - vnc

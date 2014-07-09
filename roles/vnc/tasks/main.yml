@@ -1,0 +1,50 @@
+- name: sudo apt-get update
+  apt: update_cache=yes
+  sudo: yes
+
+- name: Install {{ item }} # defined in group_vars/hosting.yml
+  apt: package={{ item }} update_cache=yes state=present
+  with_items: packages
+  sudo: yes
+
+# - name: Delete /etc/init.d/vncserver 
+#   file: path=/etc/init.d/vncserver state=absent
+#   sudo: true
+
+- name: Upload a replacement file got vncserver
+  copy: src=vncserver dest=/etc/init.d/vncserver 
+  sudo: true
+
+- name: /etc/init.d/vncserver -x
+  file: path=/etc/init.d/vncserver mode=0777
+  sudo: true
+
+- name: Upload a replacement file got xstartup 
+  command: mkdir /home/vnc/.vnc
+  sudo: true
+
+- name: Upload a replacement file got xstartup 
+  copy: src=xstartup dest=/home/vnc/.vnc/xstartup
+  sudo: true
+
+- name: /home/vnc/.vnc/xstartup -x
+  file: path=/home/vnc/.vnc/xstartup mode=0777
+  sudo: true
+
+- name: chown /home/vnc/.vnc
+  file: path=/home/vnc/.vnc owner=vnc group=vnc
+  sudo: yes
+
+- name: allow any user
+  command: sed -i 's/allowed_users.*/allowed_users=anybody/g' /etc/X11/Xwrapper.config
+  sudo: yes
+
+- name: start server
+  service: name=vncserver state=started
+  sudo: yes
+
+- name: make the server automatically start on reboot
+  command: update-rc.d vncserver defaults
+  sudo: yes
+
+

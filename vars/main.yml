@@ -1,0 +1,10 @@
+vnc: vnc
+password: $6$GqS1kM5vniwP9O$nVbjk0P6tZe8nJtNxI6Adjis1DWvSFsLgQcRsTeZ6vsScAX.sxaVgCPRAi0.HnhSF3i7k06xPyvMG1/0RbS3d0
+
+packages:
+- ubuntu-desktop
+- tightvncserver
+- xfce4
+- xfce4-goodies
+- autocutsel 
+- chromium-browser
